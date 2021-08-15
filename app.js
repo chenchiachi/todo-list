@@ -46,7 +46,7 @@ app.get('/todos/:id/edit', (req, res) => {
   const id = req.params.id
   return Todo.findById(id)
   .lean()
-  .then((todo) => res.render('edit', { todo }))
+  .then(todo => res.render('edit', { todo }))
   .catch(error => console.log(error))
 })
 
@@ -66,6 +66,14 @@ app.post('/todos/:id/edit', (req, res) => {
       return todo.save()
     })
     .then(() => res.redirect(`/todos/${id}`))
+    .catch(error => console.log(error))
+})
+
+app.post('/todos/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .then(todo => todo.remove())
+    .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
 
